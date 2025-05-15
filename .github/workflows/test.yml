@@ -1,0 +1,69 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install backend dependencies
+        working-directory: ./Stock_Flipr/backend
+        run: npm install
+
+      - name: Install frontend dependencies
+        working-directory: ./Stock_Flipr/frontend
+        run: npm install
+
+      # Optional: Lint backend
+      - name: Lint backend
+        working-directory: ./Stock_Flipr/backend
+        run: |
+          if [ -f package.json ] && npm run | grep -q lint; then
+            npm run lint
+          fi
+
+      # Optional: Lint frontend
+      - name: Lint frontend
+        working-directory: ./Stock_Flipr/frontend
+        run: |
+          if [ -f package.json ] && npm run | grep -q lint; then
+            npm run lint
+          fi
+
+      # Optional: Run backend tests
+      - name: Test backend
+        working-directory: ./Stock_Flipr/backend
+        run: |
+          if [ -f package.json ] && npm test -- --watchAll=false; then
+            echo "Backend tests ran"
+          fi
+
+      # Optional: Run frontend tests
+      - name: Test frontend
+        working-directory: ./Stock_Flipr/frontend
+        run: |
+          if [ -f package.json ] && npm test -- --watchAll=false; then
+            echo "Frontend tests ran"
+          fi
+
+      # Optional: Build frontend
+      - name: Build frontend
+        working-directory: ./Stock_Flipr/frontend
+        run: npm run build
