@@ -10,17 +10,22 @@ import Watchlist from './pages/Watchlist';
 import MainLayout from './components/MainLayout';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Always logged in
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ name: "Demo User" }); // Optional: set a dummy user
   const location = useLocation();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    setIsLoggedIn(!!token);
-    setUser(storedUser);
-  }, []);
+//   useEffect(() => {
+//   const token = localStorage.getItem('token');
+//   let storedUser = null;
+//   try {
+//     storedUser = JSON.parse(localStorage.getItem('user'));
+//   } catch (e) {
+//     storedUser = null;
+//   }
+//   setIsLoggedIn(!!token);
+//   setUser(storedUser);
+// }, []);
 
   // Close profile menu when changing routes
   useEffect(() => {
@@ -38,7 +43,8 @@ function App() {
   };
 
   const ProtectedRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/login" />;
+    //return isLoggedIn ? children : <Navigate to="/login" />;
+    return children;
   };
 
   return (

@@ -67,7 +67,7 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/signup`, {
+      const response = await axios.post(`https://stock-flipr-backend.onrender.com/api/auth/signup`, {
         name: formData.name,
         email: formData.email,
         password: formData.password

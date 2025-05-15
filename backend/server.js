@@ -42,6 +42,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/stocks', stockRoutes);
 
+
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Server is running' });
@@ -56,10 +57,8 @@ app.use((err, req, res, next) => {
 // MongoDB Connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
+    
     console.log('MongoDB connected');
   } catch (error) {
     console.error('MongoDB connection error:', error);
